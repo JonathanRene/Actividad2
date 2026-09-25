@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Conexión a la librería JS -->
+    <script src="js/utileria.js"></script>
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Iniciar Sesión</h1>
+        
+        <form id="formularioLogin">
+            <div class="grupo-input">
+                <label for="correoLogin">Correo Electrónico:</label>
+                <input type="email" id="correoLogin" placeholder="tu@correo.com">
+                <div id="errorCorreo" class="error"></div>
+            </div>
+
+            <div class="grupo-input">
+                <label for="passwordLogin">Contraseña:</label>
+                <input type="password" id="passwordLogin" placeholder="********">
+                <div id="errorPassword" class="error"></div>
+                <small class="ayuda-texto">Debe tener mayúscula, minúscula, número, carácter especial y min. 8 letras.</small>
+            </div>
+
+            <button type="button" onclick="procesarLogin()">Ingresar</button>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="index.html" class="enlace">¿No tienes cuenta? Regístrate aquí</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function procesarLogin() {
+            // Limpiar mensajes de error
+            document.getElementById('errorCorreo').textContent = '';
+            document.getElementById('errorPassword').textContent = '';
+            let loginValido = true;
+
+            const inputCorreo = document.getElementById('correoLogin').value;
+            const inputPassword = document.getElementById('passwordLogin').value;
+
+            // Validación de correo
+            if (!validarCorreo(inputCorreo)) {
+                document.getElementById('errorCorreo').textContent = 'El formato del correo es inválido.';
+                loginValido = false;
+            }
+
+            // Validación de contraseña segura
+            if (!validarPassword(inputPassword)) {
+                document.getElementById('errorPassword').textContent = 'La contraseña no cumple los requisitos de seguridad.';
+                loginValido = false;
+            }
+
+            // Mensaje de éxito con correo enmascarado
+            if (loginValido) {
+                const correoOculto = enmascararCorreo(inputCorreo);
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Acceso Concedido!',
+                    text: `Bienvenido. Se ha iniciado sesión con: ${correoOculto}`
+                });
+            }
+        }
+    </script>
+</body>
+</html>

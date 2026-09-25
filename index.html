@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="js/utileria.js"></script>
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Registro de Usuario</h1>
+        
+        <form id="formularioRegistro">
+            <div class="grupo-input">
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" placeholder="Ej: Jonathan René Cruz">
+                <div id="errorNombre" class="error"></div>
+            </div>
+
+            <div class="grupo-input">
+                <label for="correo">Correo Electrónico:</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.com">
+                <div id="errorCorreo" class="error"></div>
+            </div>
+
+            <div class="grupo-input">
+                <label for="telefono">Teléfono (10 dígitos):</label>
+                <input type="text" id="telefono" placeholder="Ej: 9511234567">
+                <div id="errorTelefono" class="error"></div>
+            </div>
+
+            <div class="grupo-input">
+                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento">
+                <div id="errorFecha" class="error"></div>
+            </div>
+
+            <button type="button" onclick="procesarFormulario()">Verificar Registro</button>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="login.html" class="enlace">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function procesarFormulario() {
+            // Limpiar mensajes de error
+            document.getElementById('errorNombre').textContent = '';
+            document.getElementById('errorCorreo').textContent = '';
+            document.getElementById('errorTelefono').textContent = '';
+            document.getElementById('errorFecha').textContent = '';
+            let formularioValido = true;
+
+            // Validación de Nombre
+            const inputNombre = document.getElementById('nombre').value;
+            if (!soloLetras(inputNombre)) {
+                document.getElementById('errorNombre').textContent = 'El nombre solo debe contener letras.';
+                formularioValido = false;
+            }
+
+            // Validación de Correo
+            const inputCorreo = document.getElementById('correo').value;
+            if (!validarCorreo(inputCorreo)) {
+                document.getElementById('errorCorreo').textContent = 'Ingresa un correo electrónico válido.';
+                formularioValido = false;
+            }
+
+            // Validación de Teléfono
+            const inputTelefono = document.getElementById('telefono').value;
+            const telefonoLimpio = inputTelefono.replace(/\D/g, ''); 
+            
+            if (!validarLongitud(telefonoLimpio, 10)) {
+                document.getElementById('errorTelefono').textContent = 'El teléfono debe tener 10 números.';
+                formularioValido = false;
+            } else {
+                document.getElementById('telefono').value = formatearTelefono(telefonoLimpio);
+            }
+
+            // Validación de Fecha
+            const inputFecha = document.getElementById('fechaNacimiento').value;
+            if (inputFecha === '') {
+                document.getElementById('errorFecha').textContent = 'Selecciona tu fecha de nacimiento.';
+                formularioValido = false;
+            }
+
+            // Despliegue de Ventana Modal si todo es correcto
+            if (formularioValido) {
+                const edad = calcularEdad(inputFecha);
+                const mayor = esMayorDeEdad(inputFecha);
+                
+                let mensajeAdicional = mayor ? 
+                    "Eres mayor de edad. Registro aprobado." : 
+                    "Eres menor de edad. Se requiere permiso de un tutor.";
+
+                Swal.fire({
+                    icon: mayor ? 'success' : 'info',
+                    title: 'Validación Completada',
+                    html: `
+                        <p>Edad calculada: <b>${edad} años</b></p>
+                        <p>${mensajeAdicional}</p>
+                    `,
+                    confirmButtonText: 'Cerrar Modal'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
