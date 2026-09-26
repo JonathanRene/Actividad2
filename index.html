@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
+    <!-- Conexión a la librería JS -->
     <script src="js/utileria.js"></script>
 </head>
 <body>
@@ -16,28 +17,40 @@
         <h1>Registro de Usuario</h1>
         
         <form id="formularioRegistro">
+            <!-- Campo Nombre -->
             <div class="grupo-input">
                 <label for="nombre">Nombre Completo:</label>
                 <input type="text" id="nombre" placeholder="Ej: Jonathan René Cruz">
                 <div id="errorNombre" class="error"></div>
             </div>
 
+            <!-- Campo Correo -->
             <div class="grupo-input">
                 <label for="correo">Correo Electrónico:</label>
-                <input type="email" id="correo" placeholder="jonisbrothre@gmail.com">
+                <input type="email" id="correo" placeholder="ejemplo@correo.com">
                 <div id="errorCorreo" class="error"></div>
             </div>
 
+            <!-- Campo Teléfono -->
             <div class="grupo-input">
                 <label for="telefono">Teléfono (10 dígitos):</label>
-                <input type="text" id="telefono" placeholder="Ej: 9514413773">
+                <input type="text" id="telefono" placeholder="Ej: 9511234567">
                 <div id="errorTelefono" class="error"></div>
             </div>
 
+            <!-- Campo Fecha de Nacimiento -->
             <div class="grupo-input">
                 <label for="fechaNacimiento">Fecha de Nacimiento:</label>
                 <input type="date" id="fechaNacimiento">
                 <div id="errorFecha" class="error"></div>
+            </div>
+
+            <!-- NUEVO: Campo Contraseña -->
+            <div class="grupo-input">
+                <label for="passwordRegistro">Crea tu Contraseña:</label>
+                <input type="password" id="passwordRegistro" placeholder="********">
+                <div id="errorPasswordRegistro" class="error"></div>
+                <small class="ayuda-texto">Debe tener mayúscula, minúscula, número, carácter especial y min. 8 letras.</small>
             </div>
 
             <button type="button" onclick="procesarFormulario()">Verificar Registro</button>
@@ -55,6 +68,7 @@
             document.getElementById('errorCorreo').textContent = '';
             document.getElementById('errorTelefono').textContent = '';
             document.getElementById('errorFecha').textContent = '';
+            document.getElementById('errorPasswordRegistro').textContent = ''; // Limpiar error de contraseña
             let formularioValido = true;
 
             // Validación de Nombre
@@ -76,7 +90,7 @@
             const telefonoLimpio = inputTelefono.replace(/\D/g, ''); 
             
             if (!validarLongitud(telefonoLimpio, 10)) {
-                document.getElementById('errorTelefono').textContent = 'El teléfono debe tener 10 números.';
+                document.getElementById('errorTelefono').textContent = 'El teléfono debe tener exactamente 10 números.';
                 formularioValido = false;
             } else {
                 document.getElementById('telefono').value = formatearTelefono(telefonoLimpio);
@@ -86,6 +100,13 @@
             const inputFecha = document.getElementById('fechaNacimiento').value;
             if (inputFecha === '') {
                 document.getElementById('errorFecha').textContent = 'Selecciona tu fecha de nacimiento.';
+                formularioValido = false;
+            }
+
+            //Validación de Contraseña 
+            const inputPassword = document.getElementById('passwordRegistro').value;
+            if (!validarPassword(inputPassword)) {
+                document.getElementById('errorPasswordRegistro').textContent = 'La contraseña no cumple los requisitos de seguridad.';
                 formularioValido = false;
             }
 
@@ -104,6 +125,7 @@
                     html: `
                         <p>Edad calculada: <b>${edad} años</b></p>
                         <p>${mensajeAdicional}</p>
+                        <p style="font-size: 12px; color: green; margin-top: 10px;">Contraseña segura guardada.</p>
                     `,
                     confirmButtonText: 'Cerrar Modal'
                 });
