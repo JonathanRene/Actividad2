@@ -13,7 +13,7 @@ const validarCorreo = (correo) => {
 };
 
 /**
- * 2. Valida que el texto contenga solo letras (incluye vocales acentuadas y ñ).
+ * 2. Valida que el texto contenga solo letras (incluye ñ).
  * @param {string} texto - Cadena a evaluar.
  * @returns {boolean} true si solo contiene letras permitidas.
  */
@@ -36,7 +36,7 @@ const validarLongitud = (numero, maxLongitud) => {
 
 /**
  * 4. Calcula la edad a partir de una fecha de nacimiento.
- * @param {string} fechaNacimiento - Fecha en formato YYYY-MM-DD.
+ * @param {string} fechaNacimiento - Fecha en formato.
  * @returns {number} Edad en años (entero).
  */
 const calcularEdad = (fechaNacimiento) => {
@@ -88,7 +88,7 @@ const formatearTelefono = (numero) => {
 /**
  * FUNCIÓN LIBRE 2: Oculta partes de un correo electrónico por privacidad.
  * @param {string} correo - Correo electrónico a enmascarar.
- * @returns {string} Correo enmascarado (ej. j***n@correo.com).
+ * @returns {string}
  */
 const enmascararCorreo = (correo) => {
     if (!validarCorreo(correo)) return correo; 
